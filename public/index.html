@@ -20,22 +20,25 @@
 
     <script type="text/javascript">
 
+        //set theme before reveal view is loaded
+        $.ig.RevealSdkSettings.theme = createCustomTheme();
+
         const revealView = new $.ig.RevealView("#revealView");
 
         revealView.onDataSourcesRequested = (callback) => {
 
             // Create a "local file data source item" with id.
-            // "local file data source item" represents that it is a local file stored in the server. 
+            // "local file data source item" represents that it is a local file stored in the server.
             // The server will map the id to the actual file path on the server.
             const localFileItem = new $.ig.RVLocalFileDataSourceItem();
             localFileItem.id = "SampleDataA";
 
-            // Create a "CSV data source" item with the "local file data source item" in its constructor argument. 
-            // "CSV data source item" represents a comma-separated-value formatted text data, and the constructor's 
-            // argument means where the CSV data comes from. 
+            // Create a "CSV data source" item with the "local file data source item" in its constructor argument.
+            // "CSV data source item" represents a comma-separated-value formatted text data, and the constructor's
+            // argument means where the CSV data comes from.
             // In this demonstration, the code will get the CSV text data from the local file on the server because
             // I passed a "local file data source item" in that constructor.
-            // And I can also configure it to fetch CSV text data through an HTTP request using 
+            // And I can also configure it to fetch CSV text data through an HTTP request using
             // a "web resource data source item", RVWebResourceDataSourceItem.
             const csvDataItem = new $.ig.RVCsvDataSourceItem(localFileItem);
             csvDataItem.id = "StockItems";
@@ -43,6 +46,30 @@
             csvDataItem.defaultRefreshRate = 0; // Specify the refresh rate in minutes. (0 means always refresh)
 
             callback(new $.ig.RevealDataSources([], [csvDataItem], false));
+        };
+
+        //create the custom theme
+        //docs: https://help.revealbi.io/api/javascript/latest/classes/revealtheme.html
+        function createCustomTheme() {
+            var theme = new $.ig.RevealTheme();
+            theme.fontColor = "#000000";
+            theme.accentColor = "#FFA500";
+            theme.dashboardBackgroundColor = "#cccccc";
+            theme.visualizationBackgroundColor = "#eeeeee";
+            theme.highlightColor = "rgb(255,0,0)";
+
+            theme.chartColors = ["#008080", "#FCE63D", "#FF007F", "#B39BFD", "#FF7F50", "#98FF98", "#000080", "#738678", "#FA8072", "#808000"];
+            theme.backgroundColors = ["rgb(192, 80, 77)", "rgb(101, 197, 235)", "rgb(232, 77, 137)"];
+
+            theme.conditionalFormatting = {'hiColor':'red', 'midColor': 'blue', 'lowColor': 'black', 'noneColor': 'gray'};
+
+            theme.regularFont = "Arial";
+            theme.mediumFont = "Georgia";
+            theme.boldFont = "Copperplate";
+
+            theme.useRoundedCorners = true;
+
+            return theme;
         };
     </script>
 </body>
